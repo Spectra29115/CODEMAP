@@ -21,12 +21,47 @@
 - [The Problem](#-the-problem)
 - [Our Solution](#-our-solution)
 - [Key Features](#-key-features)
+- [Run Locally](#-run-locally)
 - [How It Works](#-how-it-works)
 - [Tech Stack](#-tech-stack)
 - [Measurable Impact](#-measurable-impact)
 - [Challenges & Learnings](#-challenges--learnings)
 - [Roadmap](#-roadmap)
 - [Team](#-team)
+
+---
+
+## 🚀 Run Locally
+
+### 1) Frontend
+
+```bash
+npm install
+copy .env.example .env
+npm run dev
+```
+
+Frontend runs on `http://localhost:5173`.
+
+### 2) Backend
+
+```bash
+cd backend
+npm install
+copy .env.example .env
+npm run dev
+```
+
+Backend runs on `http://localhost:3001` and exposes:
+
+- `POST /api/analyze`
+- `GET /api/graph/:graphId`
+- `GET /api/summary/:fileId`
+- `GET /api/onboarding/:graphId`
+- `POST /api/query`
+- `GET /api/health`
+
+> Optional: set `GITHUB_TOKEN` in `backend/.env` to avoid GitHub API rate limits and set `ANTHROPIC_KEY` for AI summaries.
 
 ---
 

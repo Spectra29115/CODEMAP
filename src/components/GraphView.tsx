@@ -66,7 +66,7 @@ function computeLayout(nodes: RepoNode[], edges: RepoEdge[]): Record<string, Vec
     );
   });
 
-  const k = 4;
+  const k = 3.2;
   const iterations = nodes.length > 80 ? 140 : 200;
   for (let i = 0; i < iterations; i++) {
     const disp: Record<string, THREE.Vector3> = {};
@@ -103,7 +103,21 @@ function computeLayout(nodes: RepoNode[], edges: RepoEdge[]): Record<string, Vec
       const len = Math.max(d.length(), 0.01);
       const move = d.multiplyScalar(Math.min(len, t) / len);
       positions[n.id].add(move);
-      positions[n.id].multiplyScalar(0.995);
+      // Mild global gravity keeps clusters readable and prevents over-scattering.
+      positions[n.id].multiplyScalar(0.975);
+    });
+  }
+
+  // Normalize final spread so graph stays within a visually manageable radius.
+  let maxRadius = 0;
+  nodes.forEach((n) => {
+    maxRadius = Math.max(maxRadius, positions[n.id].length());
+  });
+  const targetRadius = 14;
+  if (maxRadius > 0) {
+    const scale = Math.min(targetRadius / maxRadius, 1.35);
+    nodes.forEach((n) => {
+      positions[n.id].multiplyScalar(scale);
     });
   }
 
@@ -296,15 +310,15 @@ const EdgeLine = ({ from, to, active, dimmed, baseOpacity }: EdgeLineProps) => {
     [dirNorm],
   );
 
-  const color = active ? "#22d3ee" : "#93a4b8";
-  const opacity = dimmed ? 0.09 : active ? 0.95 : baseOpacity;
+  const color = active ? "#06b6d4" : "#c2d2e4";
+  const opacity = dimmed ? 0.14 : active ? 1 : Math.max(baseOpacity, 0.5);
 
   return (
     <>
-      <Line points={points} color={color} lineWidth={active ? 2.6 : 2} transparent opacity={opacity} />
-      <mesh position={arrowPos} quaternion={arrowQuat}>
-        <coneGeometry args={[0.12, 0.36, 12]} />
-        <meshBasicMaterial color={color} transparent opacity={Math.min(opacity + 0.1, 1)} />
+      <Line points={points} color={color} lineWidth={active ? 2.9 : 2.3} transparent opacity={opacity} />
+      <mesh position={arrowPos} quaternion={arrowQuat} renderOrder={2}>
+        <coneGeometry args={[0.18, 0.54, 14]} />
+        <meshBasicMaterial color={color} transparent opacity={Math.min(opacity + 0.16, 1)} depthWrite={false} />
       </mesh>
     </>
   );

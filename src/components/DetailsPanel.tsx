@@ -26,7 +26,7 @@ const DetailsPanel = () => {
     setError(null);
 
     api
-      .getSummary(selectedNodeId)
+      .getSummary(selectedNodeId, graph?.id)
       .then((s) => !cancelled && cacheSummary(s))
       .catch(() => !cancelled && setError("Could not load summary."))
       .finally(() => !cancelled && setLoading(false));
@@ -34,7 +34,7 @@ const DetailsPanel = () => {
     return () => {
       cancelled = true;
     };
-  }, [selectedNodeId, summaries, cacheSummary]);
+  }, [selectedNodeId, summaries, cacheSummary, graph?.id]);
 
   const findLabel = (id: string) => graph?.nodes.find((n) => n.id === id)?.label ?? id;
   const findIdByName = (name: string) => graph?.nodes.find((n) => n.label === name)?.id;

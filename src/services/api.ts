@@ -7,14 +7,19 @@ import {
   dummyQuery,
 } from "./dummyData";
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "";
+const RAW_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "";
+const BASE_URL = RAW_BASE_URL
+  ? RAW_BASE_URL.replace(/\/$/, "").endsWith("/api")
+    ? RAW_BASE_URL.replace(/\/$/, "")
+    : `${RAW_BASE_URL.replace(/\/$/, "")}/api`
+  : "";
 
 const client = axios.create({
   baseURL: BASE_URL || undefined,
   timeout: 12_000,
 });
 
-const isApiConfigured = () => Boolean(BASE_URL);
+const isApiConfigured = () => Boolean(RAW_BASE_URL);
 
 // Simulate latency for the dummy data so loading states feel real
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -38,9 +43,14 @@ export const api = {
     return buildDummyGraph(repoUrl);
   },
 
-  async getSummary(fileId: string): Promise<FileSummary> {
+  async getSummary(fileId: string, graphId?: string): Promise<FileSummary> {
     if (isApiConfigured()) {
-      const { data } = await client.get(`/summary/${fileId}`);
+      const { data } = await client.get("/summary", {
+        params: {
+          fileId,
+          graphId,
+        },
+      });
       return data;
     }
     await wait(250);

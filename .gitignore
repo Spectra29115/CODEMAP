@@ -6,6 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.env
+.env.*
+!.env.example
+_import_backend_*/
 
 node_modules
 dist
