@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Repository Architecture Navigator — design system
+   Clean, minimal, light by default. All colors HSL.
+*/
+
+@layer base {
+  :root {
+    /* Light theme — soft neutral canvas with indigo accent */
+    --background: 220 25% 98%;
+    --foreground: 222 32% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 32% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 32% 12%;
+
+    --primary: 235 75% 58%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 235 90% 70%;
+
+    --secondary: 220 18% 94%;
+    --secondary-foreground: 222 32% 18%;
+
+    --muted: 220 18% 95%;
+    --muted-foreground: 220 12% 42%;
+
+    --accent: 235 75% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 16% 88%;
+    --input: 220 16% 90%;
+    --ring: 235 75% 58%;
+
+    --radius: 0.65rem;
+
+    /* Graph semantic tokens */
+    --node-default: 235 75% 58%;
+    --node-impact: 0 75% 58%;
+    --node-entry: 152 65% 42%;
+    --node-selected: 280 80% 60%;
+    --edge: 220 14% 70%;
+    --edge-active: 235 75% 58%;
+
+    /* Surfaces */
+    --surface-elevated: 0 0% 100%;
+    --surface-subtle: 220 25% 96%;
+
+    /* Gradients */
+    --gradient-bg: radial-gradient(ellipse at top, hsl(235 60% 96%) 0%, hsl(220 25% 98%) 55%);
+    --gradient-primary: linear-gradient(135deg, hsl(235 75% 58%), hsl(265 75% 62%));
+
+    /* Shadows */
+    --shadow-glow: 0 8px 32px -8px hsl(235 75% 58% / 0.25);
+    --shadow-panel: 0 1px 2px hsl(220 20% 20% / 0.04), 0 8px 24px -12px hsl(220 20% 20% / 0.08);
+    --shadow-elev: 0 1px 3px hsl(220 20% 20% / 0.06), 0 12px 32px -16px hsl(220 20% 20% / 0.14);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 32% 12%;
+    --sidebar-primary: 235 75% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 18% 94%;
+    --sidebar-accent-foreground: 222 32% 18%;
+    --sidebar-border: 220 16% 88%;
+    --sidebar-ring: 235 75% 58%;
+  }
+
+  .dark {
+    --background: 224 28% 7%;
+    --foreground: 210 25% 96%;
+
+    --card: 224 22% 11%;
+    --card-foreground: 210 25% 96%;
+
+    --popover: 224 22% 11%;
+    --popover-foreground: 210 25% 96%;
+
+    --primary: 235 90% 70%;
+    --primary-foreground: 224 28% 7%;
+    --primary-glow: 235 100% 78%;
+
+    --secondary: 224 18% 16%;
+    --secondary-foreground: 210 25% 96%;
+
+    --muted: 224 18% 16%;
+    --muted-foreground: 220 12% 68%;
+
+    --accent: 235 90% 70%;
+    --accent-foreground: 224 28% 7%;
+
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 224 16% 22%;
+    --input: 224 18% 18%;
+    --ring: 235 90% 70%;
+
+    --node-default: 235 90% 70%;
+    --node-impact: 0 80% 65%;
+    --node-entry: 152 70% 55%;
+    --node-selected: 280 85% 72%;
+    --edge: 224 14% 36%;
+    --edge-active: 235 90% 70%;
+
+    --surface-elevated: 224 22% 12%;
+    --surface-subtle: 224 22% 10%;
+
+    --gradient-bg: radial-gradient(ellipse at top, hsl(235 35% 14%) 0%, hsl(224 28% 7%) 60%);
+    --gradient-primary: linear-gradient(135deg, hsl(235 90% 70%), hsl(265 80% 72%));
+
+    --shadow-glow: 0 0 32px hsl(235 90% 70% / 0.3);
+    --shadow-panel: 0 8px 32px -12px hsl(224 50% 2% / 0.6);
+    --shadow-elev: 0 12px 36px -16px hsl(224 50% 2% / 0.7);
+
+    --sidebar-background: 224 22% 9%;
+    --sidebar-foreground: 210 25% 96%;
+    --sidebar-primary: 235 90% 70%;
+    --sidebar-primary-foreground: 224 28% 7%;
+    --sidebar-accent: 224 18% 16%;
+    --sidebar-accent-foreground: 210 25% 96%;
+    --sidebar-border: 224 16% 22%;
+    --sidebar-ring: 235 90% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    @apply h-full;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--gradient-bg);
+    background-attachment: fixed;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+}
+
+@layer utilities {
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+  .surface-panel {
+    background: hsl(var(--surface-elevated));
+    box-shadow: var(--shadow-panel);
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
