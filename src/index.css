@@ -1,135 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Repository Architecture Navigator — design system
-   Clean, minimal, light by default. All colors HSL.
-*/
-
+/* RepoNav design system — dark, developer-focused, glassmorphism */
 @layer base {
   :root {
-    /* Light theme — soft neutral canvas with indigo accent */
-    --background: 220 25% 98%;
-    --foreground: 222 32% 12%;
+    --background: 230 25% 6%;
+    --foreground: 220 20% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 32% 12%;
+    --card: 230 24% 9%;
+    --card-foreground: 220 20% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 32% 12%;
+    --popover: 230 28% 8%;
+    --popover-foreground: 220 20% 96%;
 
-    --primary: 235 75% 58%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 235 90% 70%;
+    --primary: 160 84% 50%;
+    --primary-foreground: 230 30% 6%;
+    --primary-glow: 160 90% 60%;
 
-    --secondary: 220 18% 94%;
-    --secondary-foreground: 222 32% 18%;
+    --secondary: 230 20% 14%;
+    --secondary-foreground: 220 20% 96%;
 
-    --muted: 220 18% 95%;
-    --muted-foreground: 220 12% 42%;
+    --muted: 230 18% 14%;
+    --muted-foreground: 220 12% 65%;
 
-    --accent: 235 75% 58%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 220 20% 98%;
 
-    --destructive: 0 72% 52%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 16% 88%;
-    --input: 220 16% 90%;
-    --ring: 235 75% 58%;
+    --warning: 38 92% 55%;
+    --success: 142 76% 45%;
 
-    --radius: 0.65rem;
+    --border: 230 20% 16%;
+    --input: 230 20% 14%;
+    --ring: 160 84% 50%;
 
-    /* Graph semantic tokens */
-    --node-default: 235 75% 58%;
-    --node-impact: 0 75% 58%;
-    --node-entry: 152 65% 42%;
-    --node-selected: 280 80% 60%;
-    --edge: 220 14% 70%;
-    --edge-active: 235 75% 58%;
+    --radius: 0.75rem;
 
-    /* Surfaces */
-    --surface-elevated: 0 0% 100%;
-    --surface-subtle: 220 25% 96%;
+    /* Node category colors */
+    --node-entry: 142 76% 50%;
+    --node-core: 217 91% 60%;
+    --node-utility: 220 10% 55%;
+    --node-risk: 0 84% 62%;
 
     /* Gradients */
-    --gradient-bg: radial-gradient(ellipse at top, hsl(235 60% 96%) 0%, hsl(220 25% 98%) 55%);
-    --gradient-primary: linear-gradient(135deg, hsl(235 75% 58%), hsl(265 75% 62%));
+    --gradient-hero: radial-gradient(ellipse at top, hsl(160 84% 50% / 0.18), transparent 60%),
+                     radial-gradient(ellipse at bottom right, hsl(217 91% 60% / 0.12), transparent 50%);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-card: linear-gradient(180deg, hsl(230 24% 11% / 0.7), hsl(230 24% 8% / 0.7));
 
-    /* Shadows */
-    --shadow-glow: 0 8px 32px -8px hsl(235 75% 58% / 0.25);
-    --shadow-panel: 0 1px 2px hsl(220 20% 20% / 0.04), 0 8px 24px -12px hsl(220 20% 20% / 0.08);
-    --shadow-elev: 0 1px 3px hsl(220 20% 20% / 0.06), 0 12px 32px -16px hsl(220 20% 20% / 0.14);
+    /* Shadows / glows */
+    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.35);
+    --shadow-elegant: 0 20px 60px -20px hsl(0 0% 0% / 0.6);
 
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 32% 12%;
-    --sidebar-primary: 235 75% 58%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 18% 94%;
-    --sidebar-accent-foreground: 222 32% 18%;
-    --sidebar-border: 220 16% 88%;
-    --sidebar-ring: 235 75% 58%;
+    /* Sidebar */
+    --sidebar-background: 230 26% 7%;
+    --sidebar-foreground: 220 18% 88%;
+    --sidebar-primary: 160 84% 50%;
+    --sidebar-primary-foreground: 230 30% 6%;
+    --sidebar-accent: 230 22% 12%;
+    --sidebar-accent-foreground: 220 20% 96%;
+    --sidebar-border: 230 20% 14%;
+    --sidebar-ring: 160 84% 50%;
   }
 
-  .dark {
-    --background: 224 28% 7%;
-    --foreground: 210 25% 96%;
-
-    --card: 224 22% 11%;
-    --card-foreground: 210 25% 96%;
-
-    --popover: 224 22% 11%;
-    --popover-foreground: 210 25% 96%;
-
-    --primary: 235 90% 70%;
-    --primary-foreground: 224 28% 7%;
-    --primary-glow: 235 100% 78%;
-
-    --secondary: 224 18% 16%;
-    --secondary-foreground: 210 25% 96%;
-
-    --muted: 224 18% 16%;
-    --muted-foreground: 220 12% 68%;
-
-    --accent: 235 90% 70%;
-    --accent-foreground: 224 28% 7%;
-
-    --destructive: 0 72% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 224 16% 22%;
-    --input: 224 18% 18%;
-    --ring: 235 90% 70%;
-
-    --node-default: 235 90% 70%;
-    --node-impact: 0 80% 65%;
-    --node-entry: 152 70% 55%;
-    --node-selected: 280 85% 72%;
-    --edge: 224 14% 36%;
-    --edge-active: 235 90% 70%;
-
-    --surface-elevated: 224 22% 12%;
-    --surface-subtle: 224 22% 10%;
-
-    --gradient-bg: radial-gradient(ellipse at top, hsl(235 35% 14%) 0%, hsl(224 28% 7%) 60%);
-    --gradient-primary: linear-gradient(135deg, hsl(235 90% 70%), hsl(265 80% 72%));
-
-    --shadow-glow: 0 0 32px hsl(235 90% 70% / 0.3);
-    --shadow-panel: 0 8px 32px -12px hsl(224 50% 2% / 0.6);
-    --shadow-elev: 0 12px 36px -16px hsl(224 50% 2% / 0.7);
-
-    --sidebar-background: 224 22% 9%;
-    --sidebar-foreground: 210 25% 96%;
-    --sidebar-primary: 235 90% 70%;
-    --sidebar-primary-foreground: 224 28% 7%;
-    --sidebar-accent: 224 18% 16%;
-    --sidebar-accent-foreground: 210 25% 96%;
-    --sidebar-border: 224 16% 22%;
-    --sidebar-ring: 235 90% 70%;
+  /* Force dark by default — RepoNav is dark-only */
+  html {
+    color-scheme: dark;
   }
 }
 
@@ -137,40 +76,74 @@
   * {
     @apply border-border;
   }
-
-  html, body, #root {
-    @apply h-full;
-  }
-
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
-    background: var(--gradient-bg);
+    font-feature-settings: "cv11", "ss01";
+    background-image:
+      radial-gradient(circle at 20% 0%, hsl(160 84% 50% / 0.06), transparent 40%),
+      radial-gradient(circle at 80% 100%, hsl(217 91% 60% / 0.06), transparent 40%);
     background-attachment: fixed;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
-
-  .font-mono {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
   }
 }
 
-@layer utilities {
+@layer components {
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-border/60;
+    box-shadow: var(--shadow-elegant);
+  }
+  .glass-panel {
+    background: var(--gradient-card);
+    @apply backdrop-blur-xl border border-border/60;
+  }
   .glow-primary {
     box-shadow: var(--shadow-glow);
   }
-  .surface-panel {
-    background: hsl(var(--surface-elevated));
-    box-shadow: var(--shadow-panel);
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--primary-glow)) 60%, hsl(var(--accent)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .grid-bg {
     background-image:
-      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
-    background-size: 36px 36px;
-    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+      linear-gradient(hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
-  .text-balance {
-    text-wrap: balance;
-  }
+}
+
+/* React Flow theme overrides */
+.react-flow__background {
+  background-color: hsl(var(--background));
+}
+.react-flow__controls {
+  @apply !bg-card/80 !border !border-border !rounded-lg !shadow-lg backdrop-blur;
+}
+.react-flow__controls-button {
+  @apply !bg-transparent !border-b !border-border !text-foreground hover:!bg-secondary;
+}
+.react-flow__minimap {
+  @apply !bg-card/80 !border !border-border !rounded-lg backdrop-blur;
+}
+.react-flow__attribution {
+  display: none !important;
+}
+.react-flow__edge-path {
+  stroke: hsl(var(--muted-foreground) / 0.5);
+  stroke-width: 1.5;
+}
+.react-flow__edge.highlighted .react-flow__edge-path {
+  stroke: hsl(var(--primary));
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px hsl(var(--primary) / 0.6));
+}
+.react-flow__handle {
+  background: hsl(var(--muted-foreground)) !important;
+  border: 2px solid hsl(var(--background)) !important;
+  width: 8px !important;
+  height: 8px !important;
 }
