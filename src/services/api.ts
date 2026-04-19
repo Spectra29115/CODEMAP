@@ -18,7 +18,7 @@ import {
 
 const RAW_BASE_URL =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ??
-  (import.meta.env.DEV ? "http://localhost:3001" : "/api");
+  (import.meta.env.DEV ? "http://localhost:3001" : "https://hackathon-1-r6gl.onrender.com");
 const BASE_URL = RAW_BASE_URL
   ? RAW_BASE_URL.replace(/\/$/, "").endsWith("/api")
     ? RAW_BASE_URL.replace(/\/$/, "")
