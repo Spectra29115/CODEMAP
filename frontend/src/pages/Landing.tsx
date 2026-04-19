@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { isAxiosError } from "axios";
 import {
   ArrowRight,
   Github,
@@ -166,6 +167,10 @@ const Landing = () => {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
+    if (!/github\.com/i.test(url.trim())) {
+      toast.error("Please enter a valid GitHub repository URL.");
+      return;
+    }
     setLoading(true);
     try {
       reset();
@@ -177,8 +182,25 @@ const Landing = () => {
       setGraph(graph);
       setOnboarding(onboarding);
       navigate("/dashboard");
-    } catch {
-      toast.error("Failed to analyze repository.");
+    } catch (error) {
+      if (isAxiosError<{ error?: string }>(error)) {
+        const status = error.response?.status;
+        const serverMessage = error.response?.data?.error;
+
+        if (!status) {
+          toast.error("Cannot reach backend at http://localhost:3001. Start backend with npm --prefix backend run dev.");
+        } else if (status === 404) {
+          toast.error(serverMessage ?? "Repository not found or inaccessible.");
+        } else if (status === 429) {
+          toast.error(serverMessage ?? "Rate limit reached. Try again in a moment.");
+        } else if (status === 400) {
+          toast.error(serverMessage ?? "Invalid repository URL.");
+        } else {
+          toast.error(serverMessage ?? "Failed to analyze repository.");
+        }
+      } else {
+        toast.error("Failed to analyze repository.");
+      }
     } finally {
       setLoading(false);
     }
