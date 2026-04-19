@@ -6,6 +6,6 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {
-    "VITE_API_BASE_URL": "@vite_api_base_url"
+    "VITE_API_BASE_URL": "https://hackathon-1-r6gl.onrender.com"
   }
 }
