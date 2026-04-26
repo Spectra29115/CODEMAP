@@ -10,55 +10,56 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const app = express();
 const PORT = process.env.PORT ?? 3001;
 const FRONTEND_URL =
-  process.env.FRONTEND_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:5173");
+    process.env.FRONTEND_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:5173");
 
 const localhostDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+const vercelOrigin = /^https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.vercel\.app$/i;
 
 function isAllowedOrigin(origin?: string): boolean {
-  if (!origin) return true;
-  if (origin === FRONTEND_URL) return true;
-  return localhostDevOrigin.test(origin);
+    if (!origin) return true;
+    if (origin === FRONTEND_URL) return true;
+    return localhostDevOrigin.test(origin) || vercelOrigin.test(origin);
 }
 
 app.use(helmet());
 app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (isAllowedOrigin(origin)) {
-        callback(null, true);
-        return;
-      }
-      callback(new Error("Origin not allowed by CORS"));
-    },
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
-  })
+    cors({
+        origin: (origin, callback) => {
+            if (isAllowedOrigin(origin)) {
+                callback(null, true);
+                return;
+            }
+            callback(new Error("Origin not allowed by CORS"));
+        },
+        methods: ["GET", "POST", "OPTIONS"],
+        allowedHeaders: ["Content-Type"],
+    })
 );
 app.use(express.json({ limit: "1mb" }));
 
 app.use((req, _res, next) => {
-  console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
-  next();
+    console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
+    next();
 });
 
 app.use("/api", analyzeRouter);
 
 app.use((_req, res) => {
-  res.status(404).json({ error: "Route not found" });
+    res.status(404).json({ error: "Route not found" });
 });
 
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error("[unhandled error]", err.message);
-  res.status(500).json({ error: "Internal server error" });
+    console.error("[unhandled error]", err.message);
+    res.status(500).json({ error: "Internal server error" });
 });
 
 if (process.env.VERCEL !== "1") {
-  app.listen(PORT, () => {
-    console.log(`Backend running on http://localhost:${PORT}`);
-    console.log(`Frontend allowed: ${FRONTEND_URL}`);
-    console.log(`Health check: http://localhost:${PORT}/api/health`);
-  });
+    app.listen(PORT, () => {
+        console.log(`Backend running on http://localhost:${PORT}`);
+        console.log(`Frontend allowed: ${FRONTEND_URL}`);
+        console.log(`Health check: http://localhost:${PORT}/api/health`);
+    });
 }
 
 export default app;
